@@ -66,6 +66,10 @@ HTML, CSS, JavaScript, browser localStorage, and AI-assisted development.
 - AI-assisted automation
 - Validation against business needs
 
-## Related case study
+## Related case studies
+
+[Freight Dispatch Workflow](fletes/) — vehicle suggestion, consolidation advisory and status tracking. [Live demo](https://luisdelat710.github.io/demand-capture-operations-case-study/fletes/).
+
+[Fleet Operations Review](flotilla/) — daily reporting coverage, attention items and fuel measures. [Live demo](https://luisdelat710.github.io/demand-capture-operations-case-study/flotilla/).
 
 [Pricing & Margin Decision Tool](https://github.com/luisdelat710/calculadoraprecio) — retail pricing rules, margin versus markup, and unit price validation.
