@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Demand Capture & Analysis | Portfolio Case Study</title>
+<style>
+:root{--bg:#0b1020;--card:#151b2e;--card2:#1d2540;--line:#2d375c;--text:#f5f7ff;--muted:#9ba7c7;--accent:#d6a36d;--good:#5ad08a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1080px;margin:auto;padding:24px}.hero{padding:28px 0 20px;border-bottom:1px solid var(--line);margin-bottom:22px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}.hero h1{font-size:clamp(30px,6vw,54px);line-height:1;margin:8px 0 12px}.hero p{color:var(--muted);max-width:760px;line-height:1.6}.note{background:#11172a;border:1px solid var(--line);padding:12px 14px;border-radius:12px;color:var(--muted);font-size:13px;margin-top:14px}.tabs{display:flex;gap:8px;margin:18px 0}.tabs button,.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}.tabs button.active,.btn.primary{background:var(--accent);color:#17110b;border-color:var(--accent)}.panel{display:none}.panel.active{display:block}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}.card h2,.card h3{margin-top:0}.field{margin-bottom:14px}.field label{display:block;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--text);padding:12px;border-radius:10px;font:inherit}.field textarea{min-height:72px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}.stat{background:var(--card);border:1px solid var(--line);padding:14px;border-radius:14px}.stat .n{font-size:28px;font-weight:900;color:var(--accent)}.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase}.rank{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.rank:last-child{border-bottom:none}.bar{height:6px;background:var(--card2);border-radius:99px;overflow:hidden;margin-top:5px}.bar span{display:block;height:100%;background:var(--accent)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted);font-size:10px;text-transform:uppercase}.table-wrap{overflow:auto}.success{color:var(--good);font-size:13px;margin-top:10px}.case{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.case .card p{color:var(--muted);line-height:1.5;font-size:14px}.footer{color:var(--muted);font-size:12px;padding:28px 0 10px}@media(max-width:760px){.grid,.case,.stats,.row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <div class="eyebrow">Business Operations Portfolio Case Study</div>
+    <h1>Demand Capture & Analysis System</h1>
+    <p>A lightweight workflow designed to turn informal customer requests into structured data that can be reviewed by operations and purchasing teams.</p>
+    <div class="note"><strong>Portfolio recreation:</strong> the business problem and workflow are based on a real operating use case. All names, requests and quantities shown here are simulated. No company credentials, customer data or production database are used.</div>
+  </section>
+
+  <div class="tabs">
+    <button id="tab-capture" class="active" onclick="showTab('capture')">Capture</button>
+    <button id="tab-dashboard" onclick="showTab('dashboard')">Dashboard</button>
+    <button id="tab-case" onclick="showTab('case')">Case Study</button>
+  </div>
+
+  <section id="capture" class="panel active">
+    <div class="grid">
+      <div class="card">
+        <h2>Register customer demand</h2>
+        <div class="field"><label>Salesperson</label><select id="salesperson"><option>Ana</option><option>Marco</option><option>Elena</option></select></div>
+        <div class="field"><label>Category</label><select id="category"><option>Floor / Tile</option><option>Kitchen / Furniture</option><option>Bathroom / Fixtures</option><option>Adhesive / Grout</option><option>Other</option></select></div>
+        <div class="row">
+          <div class="field"><label>Format</label><input id="format" placeholder="e.g. 60x60"></div>
+          <div class="field"><label>Color</label><input id="color" placeholder="e.g. Beige"></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Style</label><input id="style" placeholder="e.g. Marble"></div>
+          <div class="field"><label>Approx. m²</label><input id="sqm" type="number" min="0" step="0.1" placeholder="25"></div>
+        </div>
+        <div class="field"><label>Notes</label><textarea id="notes" placeholder="Optional detail"></textarea></div>
+        <button class="btn primary" onclick="saveRequest()">Save request</button>
+        <div id="saved" class="success"></div>
+      </div>
+
+      <div class="card">
+        <h3>Why capture these fields?</h3>
+        <div class="rank"><span>Category</span><span>What customers are asking for</span></div>
+        <div class="rank"><span>Format</span><span>Size patterns for purchasing</span></div>
+        <div class="rank"><span>Color / Style</span><span>Preferences hidden in free text</span></div>
+        <div class="rank"><span>Approx. m²</span><span>Demand volume, not only request count</span></div>
+        <div class="rank"><span>Salesperson</span><span>Operational traceability</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboard" class="panel">
+    <div class="stats">
+      <div class="stat"><div class="n" id="totalReq">0</div><div class="l">Requests</div></div>
+      <div class="stat"><div class="n" id="totalSqm">0</div><div class="l">Approx. m²</div></div>
+      <div class="stat"><div class="n" id="topCat">—</div><div class="l">Top category</div></div>
+      <div class="stat"><div class="n" id="topFormat">—</div><div class="l">Top format</div></div>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>Demand by category</h3><div id="catRank"></div></div>
+      <div class="card"><h3>Demand by format</h3><div id="formatRank"></div></div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3>Request detail</h3><div class="table-wrap"><table><thead><tr><th>Salesperson</th><th>Category</th><th>Format</th><th>Color</th><th>Style</th><th>m²</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+  </section>
+
+  <section id="case" class="panel">
+    <div class="case">
+      <div class="card"><h3>Business problem</h3><p>Customer requests for products not immediately available were difficult to aggregate consistently, limiting visibility into recurring demand and purchasing opportunities.</p></div>
+      <div class="card"><h3>My contribution</h3><p>Defined the information to capture, business categories, normalization logic and management views. AI-assisted development was used to accelerate implementation; outputs were reviewed against the intended operating process.</p></div>
+      <div class="card"><h3>Operational lesson</h3><p>Free-text inputs create inconsistent categories quickly. Controlled options and normalization rules improve the quality of downstream analysis without making the frontline workflow too heavy.</p></div>
+    </div>
+  </section>
+
+  <div class="footer">Portfolio case study by Luis Enrique de la Torre Acosta · Business Operations / Business Analysis</div>
+</div>
+<script>
+const seed=[
+ {salesperson:'Ana',category:'Floor / Tile',format:'60x60',color:'Beige',style:'Marble',sqm:28},
+ {salesperson:'Marco',category:'Floor / Tile',format:'60x120',color:'White',style:'Marble',sqm:42},
+ {salesperson:'Elena',category:'Bathroom / Fixtures',format:'Standard',color:'White',style:'Minimal',sqm:0},
+ {salesperson:'Ana',category:'Floor / Tile',format:'60x60',color:'Gray',style:'Concrete',sqm:35},
+ {salesperson:'Marco',category:'Adhesive / Grout',format:'20 kg',color:'Gray',style:'Standard',sqm:0},
+ {salesperson:'Elena',category:'Floor / Tile',format:'20x90',color:'Brown',style:'Wood',sqm:24}
+];
+let requests=JSON.parse(localStorage.getItem('portfolioDemandDemo')||'null')||seed;
+function showTab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.getElementById('tab-'+id).classList.add('active');if(id==='dashboard')render();}
+function norm(v){return (v||'').trim().replace(/\s*x\s*/gi,'x').replace(/\b\w/g,c=>c.toUpperCase())}
+function saveRequest(){const r={salesperson:document.getElementById('salesperson').value,category:document.getElementById('category').value,format:norm(document.getElementById('format').value)||'Not specified',color:norm(document.getElementById('color').value)||'Not specified',style:norm(document.getElementById('style').value)||'Not specified',sqm:Number(document.getElementById('sqm').value||0),notes:document.getElementById('notes').value.trim()};requests.unshift(r);localStorage.setItem('portfolioDemandDemo',JSON.stringify(requests));document.getElementById('saved').textContent='Demo request saved locally in this browser.';['format','color','style','sqm','notes'].forEach(id=>document.getElementById(id).value='');}
+function countBy(key){return requests.reduce((a,r)=>{const k=r[key]||'Not specified';a[k]=(a[k]||0)+1;return a},{})}
+function top(obj){return Object.entries(obj).sort((a,b)=>b[1]-a[1])[0]||['—',0]}
+function rankHtml(obj){const arr=Object.entries(obj).sort((a,b)=>b[1]-a[1]);const max=Math.max(...arr.map(x=>x[1]),1);return arr.map(([k,v])=>`<div class="rank"><div style="width:100%"><div style="display:flex;justify-content:space-between"><span>${k}</span><strong>${v}</strong></div><div class="bar"><span style="width:${(v/max)*100}%"></span></div></div></div>`).join('')}
+function render(){const cats=countBy('category'),fmts=countBy('format');document.getElementById('totalReq').textContent=requests.length;document.getElementById('totalSqm').textContent=requests.reduce((s,r)=>s+(Number(r.sqm)||0),0).toFixed(1);document.getElementById('topCat').textContent=top(cats)[0];document.getElementById('topFormat').textContent=top(fmts)[0];document.getElementById('catRank').innerHTML=rankHtml(cats);document.getElementById('formatRank').innerHTML=rankHtml(fmts);document.getElementById('rows').innerHTML=requests.map(r=>`<tr><td>${r.salesperson}</td><td>${r.category}</td><td>${r.format}</td><td>${r.color}</td><td>${r.style}</td><td>${r.sqm||'—'}</td></tr>`).join('')}
+render();
+</script>
+</body>
+</html>
