@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive pricing case study showing the difference between gross margin and markup in retail operations.">
+  <title>Pricing & Margin Decision Tool | Luis de la Torre</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --ink: #152739; --muted: #536474; --line: #dce5ec; --blue: #087c9a; --bg: #f4f8fa; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.5; }
+    a { color: #126f89; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    header { background: #102638; color: #d7e6ed; }
+    header .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 16px; padding-bottom: 16px; }
+    header strong { color: #fff; letter-spacing: .01em; font-size: .93rem; }
+    header a { color: #b8e8f1; text-decoration: none; font-size: .88rem; }
+    header a:hover { text-decoration: underline; }
+    .intro { background: linear-gradient(140deg, #102638 0%, #16475a 65%, #086c7e 100%); color: #fff; padding: 64px 0 70px; }
+    .eyebrow { color: #72d4d6; text-transform: uppercase; font-weight: 800; font-size: .75rem; letter-spacing: .17em; }
+    h1 { font-size: clamp(2.3rem, 5vw, 4.05rem); line-height: 1.08; letter-spacing: -.045em; max-width: 790px; margin: 16px 0 20px; }
+    .intro p { max-width: 710px; margin: 0; color: #d0e1e9; font-size: 1.1rem; }
+    .pillrow { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 27px; }
+    .pill { border: 1px solid #7babb8; border-radius: 100px; padding: 6px 12px; font-size: .8rem; color: #d9f3f3; }
+    main { padding: 34px 0 72px; }
+    .grid { display: grid; grid-template-columns: minmax(285px, 400px) minmax(0, 1fr); gap: 24px; align-items: start; }
+    .card { background: #fff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 12px 30px #163e5510; padding: 27px; }
+    h2 { font-size: 1.31rem; line-height: 1.25; letter-spacing: -.02em; margin: 0 0 7px; }
+    .sub { color: var(--muted); margin: 0 0 23px; font-size: .9rem; }
+    label { display: block; margin: 16px 0 6px; font-size: .84rem; font-weight: 700; }
+    .field { position: relative; }
+    .field input { display: block; width: 100%; padding: 11px 44px 11px 14px; border: 1px solid #c7d4dc; border-radius: 9px; outline-color: #1689a7; background: #fff; color: var(--ink); }
+    .field span { position: absolute; right: 14px; top: 11px; font-size: .9rem; color: #657887; pointer-events: none; }
+    .hint { font-size: .76rem; color: var(--muted); margin: 5px 0 0; }
+    .actions { margin-top: 24px; display: flex; gap: 9px; flex-wrap: wrap; }
+    .primary { border: none; border-radius: 9px; background: #087b98; color: #fff; padding: 11px 16px; font-weight: 750; }
+    .primary:hover { background: #06677f; }
+    .secondary { border: 1px solid #c4d2da; border-radius: 9px; background: #fff; color: var(--ink); padding: 10px 15px; font-weight: 700; }
+    .error { color: #a52d32; font-size: .85rem; min-height: 1.4em; margin: 12px 0 0; }
+    .result-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .badge { border-radius: 100px; color: #207084; background: #e6f5f7; padding: 5px 10px; font-size: .74rem; font-weight: 750; white-space: nowrap; }
+    .hero-result { margin-top: 18px; background: #e9f6f7; border: 1px solid #bfe2e7; padding: 20px; border-radius: 13px; }
+    .hero-result .label { display: block; font-size: .81rem; font-weight: 800; color: #276579; text-transform: uppercase; letter-spacing: .06em; }
+    .hero-result strong { display: block; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.2; letter-spacing: -.04em; color: #0e455b; margin-top: 5px; }
+    .hero-result small { color: #54717a; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .metric { padding: 15px; border: 1px solid #e2e9ee; border-radius: 11px; min-width: 0; }
+    .metric span { display: block; color: var(--muted); font-size: .76rem; }
+    .metric strong { display: block; font-size: 1.27rem; margin-top: 3px; letter-spacing: -.02em; overflow-wrap: anywhere; }
+    .metric small { display: block; font-size: .7rem; color: #66808c; margin-top: 2px; }
+    .comparison { border-left: 4px solid #d0a451; background: #fff8eb; padding: 15px 17px; border-radius: 0 10px 10px 0; margin-top: 17px; }
+    .comparison h3 { font-size: .91rem; margin: 0 0 6px; }
+    .comparison p { margin: 0; font-size: .83rem; color: #584e3b; }
+    .empty { display: flex; flex-direction: column; justify-content: center; min-height: 270px; color: var(--muted); }
+    .empty strong { font-size: 1.1rem; color: var(--ink); margin-bottom: 6px; }
+    .below { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    .below p { color: var(--muted); font-size: .91rem; margin: 10px 0 0; }
+    code { background: #eef3f6; border-radius: 4px; padding: 2px 5px; font-size: .85em; }
+    footer { color: #677b88; padding: 24px 0 38px; font-size: .8rem; }
+    [hidden] { display: none !important; }
+    @media (max-width: 790px) { .grid, .below { grid-template-columns: 1fr; } .intro { padding: 49px 0 52px; } }
+    @media (max-width: 410px) { .wrap { padding-left: 16px; padding-right: 16px; } .card { padding: 21px; } .metrics { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><strong>Luis de la Torre · Operations Analytics</strong><a href="https://github.com/luisdelat710/calculadoraprecio">View source on GitHub ↗</a></div></header>
+  <section class="intro"><div class="wrap">
+    <div class="eyebrow">Retail pricing · Business rules · Case study 02</div>
+    <h1>A 30% markup is not a 30% margin.</h1>
+    <p>Translate a target gross margin into a price per box and per square meter. Compare it with a cost-based markup to see why the distinction matters.</p>
+    <div class="pillrow"><span class="pill">Interactive example</span><span class="pill">Illustrative data</span><span class="pill">Transparent assumptions</span></div>
+  </div></section>
+  <main class="wrap">
+    <div class="grid">
+      <section class="card" aria-labelledby="inputs-title">
+        <h2 id="inputs-title">Set the pricing rules</h2>
+        <p class="sub">Enter a positive cost and a target gross margin. All amounts use the same currency as your input.</p>
+        <form id="pricing-form" novalidate>
+          <label for="cost">Cost per box, before tax</label>
+          <div class="field"><input id="cost" type="number" min="0.01" step="any" inputmode="decimal" placeholder="100.00" required><span>$</span></div>
+          <label for="margin">Target gross margin</label>
+          <div class="field"><input id="margin" type="number" min="0" max="99.99" step="any" inputmode="decimal" value="30" required><span>%</span></div>
+          <p class="hint">Measured as gross profit ÷ selling price before tax.</p>
+          <label for="vat">Tax assumption</label>
+          <div class="field"><input id="vat" type="number" min="0" max="100" step="any" inputmode="decimal" value="16" required><span>%</span></div>
+          <p class="hint">Editable example input; no tax determination is made here.</p>
+          <label for="area">Square meters per box <span style="font-weight:400;color:#667b86">(optional)</span></label>
+          <div class="field"><input id="area" type="number" min="0.01" step="any" inputmode="decimal" placeholder="1.64"><span>m²</span></div>
+          <div class="actions"><button type="submit" class="primary">Calculate price</button><button type="button" id="example" class="secondary">Load example</button></div>
+          <p id="error" class="error" role="alert" aria-live="polite"></p>
+        </form>
+      </section>
+      <section class="card" aria-labelledby="outputs-title">
+        <div class="result-head"><h2 id="outputs-title">Decision view</h2><span class="badge">Margin-based pricing</span></div>
+        <p class="sub">Figures are rounded for display after calculation.</p>
+        <div id="empty" class="empty"><strong>Ready for an example</strong><span>Enter a cost or select “Load example” to see the business rule in action.</span></div>
+        <div id="results" hidden aria-live="polite">
+          <div class="hero-result"><span class="label">Final price per box · including tax</span><strong id="final-price"></strong><small>Tax is added after calculating the target margin.</small></div>
+          <div class="metrics">
+            <div class="metric"><span>Price before tax</span><strong id="before-tax"></strong></div>
+            <div class="metric"><span>Gross profit per box</span><strong id="gross-profit"></strong><small>Before other expenses</small></div>
+            <div class="metric"><span>Tax amount</span><strong id="tax-amount"></strong></div>
+            <div class="metric"><span>Achieved gross margin</span><strong id="achieved-margin"></strong></div>
+            <div class="metric" id="per-m2-card" hidden><span>Final price per m²</span><strong id="per-m2"></strong><small>Including tax</small></div>
+            <div class="metric" id="cost-m2-card" hidden><span>Cost per m²</span><strong id="cost-m2"></strong><small>Before tax</small></div>
+          </div>
+          <div class="comparison"><h3>If the same percentage were used as markup</h3><p>The price before tax would be <strong id="markup-price"></strong>, with a gross margin of <strong id="markup-margin"></strong>. That is below the target margin above whenever the percentage is positive.</p></div>
+        </div>
+      </section>
+    </div>
+    <div class="below">
+      <section class="card"><h2>The rule behind the decision</h2><p><code>Price before tax = cost ÷ (1 − target margin)</code>. Gross margin uses selling price as its denominator. Markup uses cost as its denominator. Tax is calculated separately from the pre-tax selling price.</p></section>
+      <section class="card"><h2>Case study scope</h2><p>This is an illustrative portfolio recreation of a retail pricing decision. It contains no live company data. Freight, discounts, commissions, and overhead are outside this calculator. <a href="https://github.com/luisdelat710/calculadoraprecio#readme">Read the requirements and validation cases</a>.</p></section>
+    </div>
+  </main>
+  <footer class="wrap">Luis de la Torre · Business rules, operational analysis, and AI-assisted implementation</footer>
+  <script type="module">
+    import { calculatePricing } from './pricing.mjs';
+
+    const $ = (id) => document.getElementById(id);
+    const money = (n) => new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+    const pct = (n) => `${money(n)}%`;
+
+    function render() {
+      const raw = { cost: $('cost').value.trim(), margin: $('margin').value.trim(), vat: $('vat').value.trim(), area: $('area').value.trim() };
+      if (!raw.cost || !raw.margin || !raw.vat) {
+        $('error').textContent = 'Enter a cost, a target margin, and a tax assumption.';
+        $('results').hidden = true; $('empty').hidden = false;
+        return;
+      }
+      try {
+        const r = calculatePricing({ cost: raw.cost, targetMargin: raw.margin, vatRate: raw.vat, squareMetersPerBox: raw.area });
+        $('error').textContent = '';
+        $('final-price').textContent = `$${money(r.finalPrice)}`;
+        $('before-tax').textContent = `$${money(r.priceBeforeTax)}`;
+        $('gross-profit').textContent = `$${money(r.grossProfit)}`;
+        $('tax-amount').textContent = `$${money(r.taxAmount)}`;
+        $('achieved-margin').textContent = pct(r.achievedMargin);
+        $('markup-price').textContent = `$${money(r.markupPrice)}`;
+        $('markup-margin').textContent = pct(r.marginIfMarkupUsed);
+        const hasArea = r.pricePerSquareMeter !== null;
+        $('per-m2-card').hidden = !hasArea; $('cost-m2-card').hidden = !hasArea;
+        if (hasArea) {
+          $('per-m2').textContent = `$${money(r.pricePerSquareMeter)}`;
+          $('cost-m2').textContent = `$${money(r.costPerSquareMeter)}`;
+        }
+        $('empty').hidden = true; $('results').hidden = false;
+      } catch (e) {
+        $('error').textContent = e instanceof RangeError ? e.message : 'Unable to calculate. Check the inputs.';
+        $('results').hidden = true; $('empty').hidden = false;
+      }
+    }
+    $('pricing-form').addEventListener('submit', (e) => { e.preventDefault(); render(); });
+    $('example').addEventListener('click', () => {
+      $('cost').value = '100'; $('margin').value = '30'; $('vat').value = '16'; $('area').value = '1.64'; render();
+    });
+    for (const id of ['cost', 'margin', 'vat', 'area']) $(id).addEventListener('input', () => {
+      if ($('results').hidden && !($('cost').value && $('margin').value && $('vat').value)) return;
+      render();
+    });
+  </script>
+</body>
+</html>
