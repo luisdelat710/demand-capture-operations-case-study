@@ -65,3 +65,7 @@ HTML, CSS, JavaScript, browser localStorage, and AI-assisted development.
 - Workflow design
 - AI-assisted automation
 - Validation against business needs
+
+## Related case study
+
+[Pricing & Margin Decision Tool](https://github.com/luisdelat710/calculadoraprecio) — retail pricing rules, margin versus markup, and unit price validation.
